@@ -1,0 +1,395 @@
+<html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths" style=""><head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>
+    01001 Mathematics 1a (Polytechnical foundation) 
+</title>
+    <link href="/bundles_css_general?v=mCt0xLH6ZVm097AMT4IZXI_8YhGCBjBIv-CzzPZWduw1" rel="stylesheet">
+
+    <script src="/bundles_js_general?v=m944kgjFG7-r2HFwxi7Q_xDuvGXt8MWkcxYxVH_TSmE1"></script>
+
+    
+
+
+    <script>
+        $(function () {
+            $("[data-open-dialog]").on('click touchstart', function () {
+                var me = $(this);
+                var bs = $("#" + me.data("open-dialog"));
+                bs.modal({ show: true, backdrop: true });
+            });
+        });
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function setCookieExHours(cname, cvalue, exhours) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exhours * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function setCookie(c_name, value, exdays) {
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + exdays);
+            var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+            document.cookie = c_name + "=" + c_value + ";path=/;";
+        }
+
+        function setLanguage(language) {
+            setCookie('{DTUCoursesPublicLanguage}', language, 3650);
+            $.ajax("/unsetLanguage", {
+                method:"POST"
+            }).done(function () { location.reload(); })
+        }
+
+        function alertBox(message) {
+            alert(message);
+        }
+    </script>
+
+    
+    <style>
+        #pagecontents > div:nth-child(2):not(:last-child) {
+            font-weight: bold;
+            color: #b20000;
+        }
+    </style>
+    <style>
+        .information > table > tbody > tr > td {
+            padding-top: 12px;
+            vertical-align: top;
+        }
+
+            .information > table > tbody > tr > td:first-child {
+                width: 30%;
+            }
+
+        .bar {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+            .bar:first-child {
+                margin-top: 0px;
+            }
+
+        .box {
+            padding-bottom: 10px;
+        }
+
+        .popover {
+            font-size: 0.9em;
+        }
+
+            .popover .popover-title {
+                font-size: 1em;
+            }
+
+            .popover input {
+                width: 100%;
+            }
+
+        .CourseLink {
+            display: inline-block;
+        }
+    </style>
+    <script>
+        var holdings = [
+        ];
+
+        var lines = [
+'Polytechnical foundation (BSc), Software Technology','Polytechnical foundation (BSc), Sustainable Energy Design','Polytechnical foundation (BSc), Cybertechnology','Polytechnical foundation (BSc), General Engineering - taught in Danish','Polytechnical foundation (BSc), Biomedical Engineering','Polytechnical foundation (BSc), Electrical Engineering','Polytechnical foundation (BSc), Engineering Physics','Polytechnical foundation (BSc), Civil Engineering','Polytechnical foundation (BSc), Artificial Intelligence and Data','Polytechnical foundation (BSc), Design and Innovation','Polytechnical foundation (BSc), Life Science Engineering','Polytechnical foundation (BSc), Environmental Engineering','Basic Natural Science Courses, Design of Sustainable Energy Systems','Polytechnical foundation (BSc), Computer Engineering','Polytechnical foundation (BSc), Data Science and Management','Polytechnical foundation (BSc), Earth and Space Physics and Engineering','Polytechnical foundation (BSc), Chemistry and Technology','Basic Natural Science Courses, Life Science and Technology','Basic Natural Science Courses, Environmental Engineering','Polytechnical foundation (BSc), Mathematics and Technology','Polytechnical foundation (BSc), Mechanical Engineering','Polytechnical foundation (BSc), Architectural Engineering'        ];
+                    var collectedTooltips = {};
+                    function getCourseTitle() {
+                        var courseCode =  $(this).text();
+                        var url = '/course/getTitle/[COURSECODE]'.replace("[COURSECODE]", courseCode);
+                        if (!collectedTooltips.hasOwnProperty(courseCode)) {
+                            collectedTooltips[courseCode] = courseCode;
+                $.ajax(url, {
+                                async: false,
+                    success: function (data) {
+                                    if (data.title != null) {
+                                        collectedTooltips[courseCode] = data.title;
+                                    }
+                                }
+                            });
+                        }
+                        return collectedTooltips[courseCode];
+                    }
+        $(document).on('click', function (e) {
+            $('[data-toggle="popover"],[data-original-title]').each(function () {
+                            //the 'is' for buttons that trigger popups
+                            //the 'has' for icons within a button that triggers a popup
+                            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                                (($(this).popover('hide').data('bs.popover') || {}).inState || {}).click = false  // fix for BS 3.3.6
+                }
+
+                        });
+                    });
+        $(function () {
+            $(".permalink").popover({
+                            placement: "left",
+                title: "Permalinks",
+                content: function(){
+                                return $("#permalinkBox").html();
+                            },
+                trigger: "click",
+                html:true
+            });
+                        if (lines.length != 0) {
+                            var groups = [];
+                            for (var i = 0 ; i < lines.length; i++) {
+                                var line = lines[i];
+                                if (line == "") {
+                                    continue;
+                                }
+                                var found = false;
+                                var key = line.split(",")[0];
+                                var me = { id: key, values: [line] };
+
+                            for (var j = 0; j < groups.length; j++) {
+                                if (groups[j].id == me.id) {
+                                    groups[j].values.push(me.values[0]); found = true;
+                                }
+                            }
+                            if (!found) {
+                                groups.push(me);
+                            }
+                        }
+
+                        var str = "";
+                $(groups).each(function () {
+                            if (this.values.length > 3) {
+                                str += "<span class='expander' style='color:#b20000;cursor:pointer'>" + this.id + ", see more<br/></span>";
+                        $(this.values).each(
+                            function () {
+                                    str += "<span style='display:none'>" + this + "<br/></span>";
+                                });
+                            } else {
+                        $(this.values).each(
+                            function () {
+                                    str += "<span>" + this + "<br/></span>";
+                                });
+                            }
+                        });
+                $("#studiebox").html(str);
+                $(".expander").click(function () {
+                            var node = $(this).nextUntil(".expander").show();
+                    $(this).hide()
+                });
+                    }
+
+                    if (holdings.length != 0) {
+                        var str = "<td>Course holdings</td><td>";
+                        for (var i = 0; i < holdings.length; i++) {
+                            str += "<div>" + holdings[i][0] + (holdings[i][1]!=null? "<br/>" + holdings[i][1]:"") + "</div>";
+                        }
+
+                        str += "</td>";
+                $("#courseHoldingsBox").html(str);
+                    }
+
+            $(".CourseLink").tooltip({
+                        title:getCourseTitle,
+                trigger:"hover focus"
+            });
+            $(document).on("click", ".inBasket", function () {
+                        var e = $(this);
+                        var courseCode = e.data("coursecode");
+                        if (e.data("musttake") === "True") {
+                            alertBox("Can't delete courses that MUST be taken from the basket.");
+                            return
+                        }
+                $.ajax("/deleteCourseFromBasket",{
+                            method: "POST",
+                    data: {
+                                courseCode : courseCode
+                    },
+                    success: function (data) {
+                                switch (parseInt(data)) {
+                                    case 0:
+                                        e.attr("src", "/Content/Images/basket_empty.png");
+                                        e.toggleClass("addToBasket");
+                                        e.toggleClass("inBasket");
+                                        break;
+                                    case 1:
+                                        alertBox("Can't delete courses that MUST be taken from the basket.");
+                                        break;
+                                    case 2:
+                                        e.attr("src", "/Content/Images/basket_empty.png");
+                                        e.toggleClass("addToBasket");
+                                        e.toggleClass("inBasket");
+                                        alertBox("Can't delete courses that are not in the basket.");
+                                        break;
+                                }
+                            },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                                alertBox("Failed to delete the course from the basket.");
+                            }
+                        });
+                    });
+
+            $(document).on("click", ".addToBasket", function () {
+                        var e = $(this);
+                        var courseCode = e.data("coursecode");
+                $.ajax(
+                    "/addToBasket",
+                    {
+                            data:{
+                                courseCode: courseCode
+                            },
+                        method:"POST",
+                        success: function (data) {
+                                switch (parseInt(data)) {
+                                    case 0:
+                                        e.attr("src", "/Content/Images/basket_filled.png");
+                                        e.toggleClass("addToBasket");
+                                        e.toggleClass("inBasket");
+                                        break;
+                                    case 1:
+                                        alertBox("Can't add this course to the plan cause it is already in it.");
+                                        break;
+                                }
+                            }
+                        }
+                );
+                    })
+        })
+    </script>
+
+    <link rel="shortcut icon" href="/Content/Images/favicon.ico">
+
+</head>
+<body style="">
+    <div class="dturedbackground">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <span><a href="javascript:setLanguage('da-DK')">Dansk</a></span>
+                        <span class="seperator">|</span>
+                            <span><a href="/login/login">Login</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dtugreybackground">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                        <a href="/search">
+                            <img class="pull-left logo-img" style="padding:10px 0" src="/Content/Images/dtulogo_colour.png">
+                        </a>
+                        <span class="mofoclass pull-right" style="position:absolute; bottom:1px; right: 13px;">
+                            <ul class="nav nav-tabs hidden-print">
+                                <li role="presentation" class="active"><a href="/search">Course search</a></li>
+                                <li role="presentation"><a href="/course/gotoStudyplanner">Study Planner</a></li>
+                            </ul>
+                        </span>
+                        <div class="clearfix"></div>
+                   </div>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        
+<ul class="nav nav-tabs hidden-print">
+    <li role="presentation" class="active"><a href="#">01001</a></li>
+        <li role="presentation"><a href="/course/01001/info">Information</a></li>
+</ul>
+<div class="row  hidden-print">
+    <div class="col-xs-12">
+        
+        <span class="glyphicon glyphicon-print pull-right clickable" onclick="window.print()" style="padding-left:3px;font-size:16px"></span>
+        <span class="glyphicon glyphicon-link pull-right permalink clickable" style="padding-left:3px;font-size:16px" data-original-title="" title=""></span>
+    </div>
+</div>
+<div id="pagecontents" name="pagecontents"><div class="row"><div class="col-xs-8"><h2 style="font-family:verdana; font-size:18px; margin-bottom: 10px;">
+01001 Mathematics 1a (Polytechnical foundation)</h2></div><div class="col-xs-4"><h2 style="font-family:verdana; font-size:18px; margin-bottom: 10px;text-align:right">
+2024/2025</h2></div></div><div class="row"><div class="col-md-6 col-sm-12 col-xs-12"><div class="box information"><div class="bar">Course information</div><table><tbody><tr><td><label>Danish title</label></td><td>Matematik 1a (Polyteknisk grundlag)</td></tr><tr><td><label>Language of instruction</label></td><td>Danish</td></tr><tr><td><label>Point( ECTS )</label></td><td>10</td></tr><tr><td><label>Course type</label></td><td><div>BSc</div><div>Offered as a single course</div><div id="studiebox"><span class="expander" style="color:#b20000;cursor:pointer">Polytechnical foundation (BSc), see more<br></span><span style="display:none">Polytechnical foundation (BSc), Software Technology<br></span><span style="display:none">Polytechnical foundation (BSc), Sustainable Energy Design<br></span><span style="display:none">Polytechnical foundation (BSc), Cybertechnology<br></span><span style="display:none">Polytechnical foundation (BSc), General Engineering - taught in Danish<br></span><span style="display:none">Polytechnical foundation (BSc), Biomedical Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Electrical Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Engineering Physics<br></span><span style="display:none">Polytechnical foundation (BSc), Civil Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Artificial Intelligence and Data<br></span><span style="display:none">Polytechnical foundation (BSc), Design and Innovation<br></span><span style="display:none">Polytechnical foundation (BSc), Life Science Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Environmental Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Computer Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Data Science and Management<br></span><span style="display:none">Polytechnical foundation (BSc), Earth and Space Physics and Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Chemistry and Technology<br></span><span style="display:none">Polytechnical foundation (BSc), Mathematics and Technology<br></span><span style="display:none">Polytechnical foundation (BSc), Mechanical Engineering<br></span><span style="display:none">Polytechnical foundation (BSc), Architectural Engineering<br></span><span>Basic Natural Science Courses, Design of Sustainable Energy Systems<br></span><span>Basic Natural Science Courses, Life Science and Technology<br></span><span>Basic Natural Science Courses, Environmental Engineering<br></span></div></td></tr></tbody></table><table><tbody><tr><td><label><a href="http://kurser.dtu.dk/schedule/01001/2024-2025">Schedule</a></label></td><td>Autumn
+<br>
+ Course is given in two different schedules dependent on BSc
+programme.
+<br>
+Scheme A: E1A, E2, Scheme B: E3A, E4.</td></tr><tr><td><label>Location</label></td><td>Campus Lyngby</td></tr><tr><td><label>Scope and form</label></td><td>From week: 2 lectures, 3h tutorials and 4h planned self study.
+Moreover thematic exercises in some weeks.</td></tr><tr><td><label>Duration of Course</label></td><td>13 weeks</td></tr><tr><td><label><a href="https://www.inside.dtu.dk/en/undervisning/regler/regler-for-eksamen/eksamensdatoer">
+Date of examination</a></label></td><td>Special day: Click "Date of examination" to the left
+to see DTU's examination timetable.</td></tr><tr><td><label>Type of assessment</label></td><td>Written examination and exercises
+<br>
+ 2 parts: 1) 4 homework assignments (weight 1/5), 2) Tests in fall
+curriculum (weight 4/5). Precise description:
+https://mat1a.compute.dtu.dk/Info/Eksamensregler.html</td></tr><tr><td><label>Exam duration</label></td><td>Written exam: 4 hours
+<br>
+ 2+2 hours</td></tr><tr><td><label>Aid</label></td><td>All Aid - no access to the internet : 
+<p class="normal">2-h with written aids without a calculator and a
+2-h with all aid-without access to the internet</p></td></tr><tr><td><label>Evaluation</label></td><td>7 step scale , external examiner</td></tr><tr><td><label>Not applicable together with</label></td><td>(<a href="http://kurser.dtu.dk/course/01911" class="CourseLink" data-original-title="" title="">01911</a>.<a href="http://kurser.dtu.dk/course/01922" class="CourseLink" data-original-title="" title="">01922</a>)(<a href="http://kurser.dtu.dk/course/01901" class="CourseLink" data-original-title="" title="">01901</a>/­<a href="http://kurser.dtu.dk/course/01910" class="CourseLink" data-original-title="" title="">01910</a>).<a href="http://kurser.dtu.dk/course/01920" class="CourseLink" data-original-title="" title="">01920</a>)/­<a href="http://kurser.dtu.dk/course/01005" class="CourseLink" data-original-title="" title="">01005</a>/­<a href="http://kurser.dtu.dk/course/01006" class="CourseLink" data-original-title="" title="">01006</a>/­<a href="http://kurser.dtu.dk/course/01015" class="CourseLink" data-original-title="" title="">01015</a></td></tr></tbody></table><table><tbody><tr><td><label>Responsible</label></td><td><a class="menulink" href="http://www.dtu.dk/Service/Telefonbog.aspx?id=9656&amp;type=person&amp;lg=showcommon">
+Ulrik Engelund Pedersen</a> , Lyngby Campus, Building 303B, Ph.
+(+45)&nbsp;4525 5203 , <a href="mailto:uepe@dtu.dk">uepe@dtu.dk</a><br></td></tr><tr><td><label>Course co-responsible</label></td><td><a class="menulink" href="http://www.dtu.dk/Service/Telefonbog.aspx?id=28452&amp;type=person&amp;lg=showcommon">
+Peter Beelen</a> , Lyngby Campus, Building 303B, Ph.
+(+45)&nbsp;4525 3022 , <a href="mailto:pabe@dtu.dk">pabe@dtu.dk</a><br></td></tr><tr><td><label>Department</label></td><td title="01 Department of Applied Mathematics and Computer Science(100%)">
+01 Department of Applied Mathematics and Computer Science</td></tr><tr><td><label>Home page</label></td><td><a class="menulink" href="https://01001.compute.dtu.dk/intro.html">https://01001.compute.dtu.dk/intro.html</a></td></tr><tr><td><label>Registration Sign up</label></td><td><div>At the
+Studyplanner</div></td></tr></tbody></table></div></div><div class="col-md-6 col-sm-12 col-xs-12"><div class="box"><div class="bar">General course objectives</div>
+The course content provides a part of the mathematical basis for a
+broad range of technical fields and also provides a starting point
+for further studies in mathematics and applied mathematics. The
+dominating themes of the course are logic and linear algebra. The
+goal is to strengthen the ability of students to use mathematical
+reasoning on the one hand and an algorithmic, computational
+approach on the other hand, to understand and work with fundamental
+concepts from linear algebra. The theory is exemplified by thematic
+exercises. Further, computer software is used to integrate
+computational and theoretical aspects of the curriculum. 
+<div class="bar">Learning objectives</div>
+A student who has met the objectives of the course will be able to:
+
+<ul><li>use truth tables to investigate statements from propositional
+logic</li><li>use the algebraic and the geometric representation of complex
+numbers including the complex exponential function</li><li>perform computations with polynomials over the complex
+numbers</li><li>apply inductive thinking in mathematical statements</li><li>compute/execute a function/algorithm defined in a recursive
+way</li><li>use matrix algebra and Gaussian elimination for solving systems
+of linear equations and describe their solution sets</li><li>analyze linear maps between vector spaces</li><li>analyze the eigenvalue problem in particular for square
+matrices</li><li>solve systems of first order linear differential equations with
+constant coefficients</li><li>describe the structure of solutions to a second order linear
+differential equation with constant coefficients</li><li>use mathematical terminology and logical reasoning in written
+presentations</li><li>use a computer to execute various algorithms</li></ul><div class="bar">Content</div>
+Propositional logic. Complex numbers. Recursion and induction.
+Systems of linear equations. Matrix algebra. Vector spaces. Linear
+maps. Eigenvalue problems. Systems of first order linear
+differential equations with constant coefficients. Use of computer
+in linear algebra. Examples of applications in the engineering
+sciences. 
+<div class="bar">Last updated</div>
+20. september, 2024</div></div></div></div>
+<div style="display:none" id="permalinkBox">
+    <div>Copy links for linking to this course description</div>
+    <div><b>Current version:</b><input type="text" value="https://kurser.dtu.dk/course/2024-2025/01001"></div>
+    <div><b>Newest version:</b><input type="text" value="https://kurser.dtu.dk/course/01001"></div>
+    <div><em>Current version</em> will always link to this exact version of the course.</div>
+    <div><em>Newest version</em> will link to the newest version of the course.</div>
+</div>
+
+
+
+
+
+    </div>
+
+</body></html>
