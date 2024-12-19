@@ -1,35 +1,17 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-import time
+<!DOCTYPE html>
 
-def get_course_details_with_selenium(url):
-    # Set up Selenium with Chrome
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>kurser.dtu.dk</title>
+</head>
+<body>
+    <script>
+        setTimeout(function() {
+            window.location.reload();
+        }, 500);
+    </script>
     
-    service = Service('/path/to/chromedriver')  # Update with your path to chromedriver
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-    
-    try:
-        print(f"\nFetching {url} with Selenium")
-        driver.get(url)
-        time.sleep(5)  # Wait for JavaScript to load content
-        
-        # Save the page source
-        with open('response_course_selenium.html', 'w', encoding='utf-8') as f:
-            f.write(driver.page_source)
-        print("\nSaved response to response_course_selenium.html")
-        
-    finally:
-        driver.quit()
-
-def main():
-    # Test with the course URL
-    test_course_url = "https://kurser.dtu.dk/course/01001"
-    get_course_details_with_selenium(test_course_url)
-
-if __name__ == "__main__":
-    main()
+    <iframe style="display:none" id="loginFrame" src="?forceLogin=true"></iframe>
+</body>
+</html>

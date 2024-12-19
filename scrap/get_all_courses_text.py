@@ -1,11 +1,17 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 import json
 import time
 from tqdm import tqdm
-import requests
+import os
+import shutil
+import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+# Set up logging
+logging.basicConfig(filename='process.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def extract_content_from_html(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -48,38 +54,64 @@ def extract_content_from_html(html_content):
     return details
 
 def get_course_details(url):
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Referer': 'https://kurser.dtu.dk/',
-        'Connection': 'keep-alive',
-        'Cache-Control': 'max-age=0',
-    }
+    firefox_options = Options()
+    firefox_options.add_argument("--headless")
+    firefox_options.binary_location = os.path.expanduser("~/firefox/firefox/firefox")
     
-    print(f"\nFetching {url}")
-    response = requests.get(url, headers=headers)
-    print(f"Response status code: {response.status_code}")
-    print(f"Response URL: {response.url}")
+    service = Service(
+        executable_path=os.path.expanduser("~/firefox/geckodriver"),
+        log_path=os.path.expanduser("~/firefox/geckodriver.log")
+    )
     
-    # Save the response to a file
-    with open('response_course.html', 'w', encoding='utf-8') as f:
-        f.write(response.text)
-    print("\nSaved response to response_course.html")
+    driver = webdriver.Firefox(service=service, options=firefox_options)
     
-    return None
+    try:
+        driver.get(url)
+        time.sleep(0.5)
+        return extract_content_from_html(driver.page_source)
+    finally:
+        driver.quit()
+
+def fetch_course_details(course):
+    try:
+        # Get additional details
+        details = get_course_details(course['course_url'])
+        
+        # Combine original course data with new details
+        enriched_course = {
+            **course,
+            'general_course_objectives': details['general_course_objectives'],
+            'learning_objectives': details['learning_objectives'],
+            'content': details['content']
+        }
+        return enriched_course
+    except Exception as e:
+        logging.error(f"Error processing {course['course_url']}: {str(e)}")
+        print(f"Error processing {course['course_url']}: {str(e)}")  # Print error to console
+        raise e
 
 def process_all_courses():
     # Load existing courses
     with open('courses.json', 'r', encoding='utf-8') as f:
         courses = json.load(f)
     
-    # Create a new list for courses with details
+    # Load existing enriched courses if the file exists
     enriched_courses = []
+    if os.path.exists('courses_with_details.json'):
+        try:
+            with open('courses_with_details.json', 'r', encoding='utf-8') as f:
+                if os.path.getsize('courses_with_details.json') > 0:  # Check if file is not empty
+                    enriched_courses = json.load(f)
+        except json.JSONDecodeError:
+            print("Warning: courses_with_details.json is not a valid JSON file. Starting fresh.")
+    
+    # Determine the starting index based on the length of enriched_courses
+    start_index = len(enriched_courses)
+    remaining_courses = courses[start_index:]
     
     # Process each course with a progress bar
-    print(f"\nProcessing {len(courses)} courses:")
-    for i, course in enumerate(tqdm(courses)):
+    print(f"\nContinuing processing from course {start_index + 1} of {len(courses)}:")
+    for i, course in enumerate(tqdm(remaining_courses)):
         try:
             # Get additional details
             details = get_course_details(course['course_url'])
@@ -94,30 +126,27 @@ def process_all_courses():
             
             enriched_courses.append(enriched_course)
             
-            # Save to main output file every 25 courses
-            if (i + 1) % 25 == 0:
-                with open('courses_with_details.json', 'w', encoding='utf-8') as f:
+            # Save to a temporary file every 25 courses
+            current_index = start_index + i + 1
+            if current_index % 25 == 0:
+                with open('courses_with_details_temp.json', 'w', encoding='utf-8') as f:
                     json.dump(enriched_courses, f, ensure_ascii=False, indent=2)
-                print(f"\nProgress saved: {i+1} courses processed")
+                shutil.move('courses_with_details_temp.json', 'courses_with_details.json')
+                print(f"\nProgress saved: {current_index} courses processed")
             
         except Exception as e:
             print(f"\nError processing {course['course_url']}: {str(e)}")
             enriched_courses.append(course)
     
-    # Save final result
-    with open('courses_with_details.json', 'w', encoding='utf-8') as f:
+    # Save final result to a temporary file and then move it
+    with open('courses_with_details_temp.json', 'w', encoding='utf-8') as f:
         json.dump(enriched_courses, f, ensure_ascii=False, indent=2)
+    shutil.move('courses_with_details_temp.json', 'courses_with_details.json')
     
     print("\nProcessing complete! Saved to courses_with_details.json")
 
 def main():
-    # Load courses
-    with open('courses.json', 'r', encoding='utf-8') as f:
-        courses = json.load(f)
-    
-    # Test with first course
-    test_course = courses[0]
-    details = get_course_details(test_course['course_url'])
+    process_all_courses()
 
 if __name__ == "__main__":
     main()
