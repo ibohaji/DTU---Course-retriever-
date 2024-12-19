@@ -1,0 +1,70 @@
+{
+  "config":{
+    "query_token_id":"[unused0]",
+    "doc_token_id":"[unused1]",
+    "query_token":"[Q]",
+    "doc_token":"[D]",
+    "ncells":null,
+    "centroid_score_threshold":null,
+    "ndocs":null,
+    "load_index_with_mmap":false,
+    "index_path":null,
+    "index_bsize":32,
+    "nbits":4,
+    "kmeans_niters":20,
+    "resume":false,
+    "similarity":"cosine",
+    "bsize":64,
+    "accumsteps":1,
+    "lr":0.00001,
+    "maxsteps":400000,
+    "save_every":null,
+    "warmup":20000,
+    "warmup_bert":null,
+    "relu":false,
+    "nway":64,
+    "use_ib_negatives":true,
+    "reranker":false,
+    "distillation_alpha":1.0,
+    "ignore_scores":false,
+    "model_name":null,
+    "query_maxlen":32,
+    "attend_to_mask_tokens":false,
+    "interaction":"colbert",
+    "dim":128,
+    "doc_maxlen":256,
+    "mask_punctuation":true,
+    "checkpoint":"colbert-ir/colbertv2.0",
+    "triples":"/future/u/okhattab/root/unit/experiments/2021.10/downstream.distillation.round2.2_score/round2.nway6.cosine.ib/examples.64.json",
+    "collection":[
+      "list with 3792 elements starting with...",
+      [
+        "Propositional logic. Complex numbers. Recursion and induction.\nSystems of linear equations. Matrix algebra. Vector spaces. Linear\nmaps. Eigenvalue problems. Systems of first order linear\ndifferential equations with constant coefficients. Use of computer\nin linear algebra.",
+        "Propositional logic. Complex numbers. Recursion and induction.\nSystems of linear equations. Matrix algebra. Vector spaces. Linear\nmaps. Eigenvalue problems. Systems of first order linear\ndifferential equations with constant coefficients. Use of computer\nin linear algebra. Examples of applications in the engineering\nsciences.A student who has met the objectives of the course will be able to:\n\u2022 use truth tables to investigate statements from propositional\nlogic\n\u2022 use the algebraic and the geometric representation of complex\nnumbers including the complex exponential function\n\u2022 perform computations with polynomials over the complex\nnumbers\n\u2022 apply inductive thinking in mathematical statements\n\u2022 compute/execute a function/algorithm defined in a recursive\nway\n\u2022 use matrix algebra and Gaussian elimination for solving systems\nof linear equations and describe their solution sets\n\u2022 analyze linear maps between vector spaces\n\u2022 analyze the eigenvalue problem in particular for square\nmatrices\n\u2022 solve systems of first order linear differential equations with\nconstant coefficients\n\u2022 describe the structure of solutions to a second order linear\ndifferential equation with constant coefficients\n\u2022 use mathematical terminology and logical reasoning in written\npresentations\n\u2022 use a computer to execute various algorithmsThe course content provides a part of the mathematical basis for a\nbroad range of technical fields and also provides a starting point\nfor further studies in mathematics and applied mathematics.",
+        "The\ndominating themes of the course are logic and linear algebra. The\ngoal is to strengthen the ability of students to use mathematical\nreasoning on the one hand and an algorithmic, computational\napproach on the other hand, to understand and work with fundamental\nconcepts from linear algebra. The theory is exemplified by thematic\nexercises. Further, computer software is used to integrate\ncomputational and theoretical aspects of the curriculum."
+      ]
+    ],
+    "queries":"/future/u/okhattab/data/MSMARCO/queries.train.tsv",
+    "index_name":"DTU Course-base",
+    "overwrite":false,
+    "root":".ragatouille/",
+    "experiment":"colbert",
+    "index_root":null,
+    "name":"2024-12/18/22.35.24",
+    "rank":0,
+    "nranks":1,
+    "amp":true,
+    "gpus":1,
+    "avoid_fork_if_possible":false
+  },
+  "num_chunks":1,
+  "num_partitions":8192,
+  "num_embeddings":586245,
+  "avg_doclen":154.6004746835,
+  "RAGatouille":{
+    "index_config":{
+      "index_type":"PLAID",
+      "index_name":"DTU Course-base"
+    }
+  }
+}

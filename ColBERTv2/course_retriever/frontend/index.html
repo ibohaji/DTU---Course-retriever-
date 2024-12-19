@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Home - AI Powered Search{% endblock %}
+
+{% block content %}
+    <!-- Centered Content Container -->
+    <div class="content-container">
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Search courses..." 
+                name="query"
+            />
+            <button 
+                class="search-button" 
+                hx-get="/search" 
+                hx-target="#results" 
+                hx-include="[name='query']"
+                hx-indicator=".spinner-container"
+            >
+                Search
+            </button>
+        </div>
+
+        <!-- Results area that will first show spinner, then results -->
+        <div id="results" class="results-container">
+            {% include 'spinner.html' %}
+        </div>
+
+        <!-- AI Powered Search Heading -->
+        <div class="ai-search">
+            <span class="ai-powered">AI Powered</span>
+            <span class="search">Search</span>
+        </div>
+
+        <!-- Search Results -->
+        
+        <!-- Course Details Modal -->
+        <div id="course-details" class="course-details-modal"></div>
+    </div>
+{% endblock %}
