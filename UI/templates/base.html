@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student-Counsler AI</title>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+</head>
+<body x-data="{ 
+    darkMode: localStorage.getItem('darkMode') === 'true',
+    sidebarOpen: localStorage.getItem('sidebarOpen') !== null ? localStorage.getItem('sidebarOpen') === 'true' : true,
+    messages: [],
+    error: null,
+    toggleTheme() {
+        this.darkMode = !this.darkMode;
+        localStorage.setItem('darkMode', this.darkMode);
+    },
+    toggleSidebar() {
+        this.sidebarOpen = !this.sidebarOpen;
+        localStorage.setItem('sidebarOpen', this.sidebarOpen);
+    },
+    formatTime(timestamp) {
+        return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+}" 
+:class="{ 'dark': darkMode }">
+    
+    <!-- Theme Toggle -->
+    <button 
+        @click="toggleTheme()"
+        class="theme-toggle"
+        aria-label="Toggle theme">
+        <span x-show="darkMode" x-cloak>☀️</span>
+        <span x-show="!darkMode" x-cloak>🌙</span>
+    </button>
+
+    <!-- Add mobile menu button -->
+    <button 
+        class="mobile-menu-button"
+        @click="toggleSidebar()"
+        aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+        </svg>
+    </button>
+
+    <div class="layout-container">
+        {% include 'components/sidebar.html' %}
+        
+        <main class="main-content">
+            <div class="chat-interface">
+                <div class="header">
+                    <div class="logo">AI</div>
+                    <h1>Student-Counsler AI</h1>
+                </div>
+                
+                <div class="chat" 
+                     hx-trigger="load, newMessage from:body" 
+                     hx-get="/messages">
+                    <div id="resultText" class="messages-container">
+                        <!-- This is where messages should appear -->
+                        <div class="welcome-message">
+                            How can I assist you today?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-section">
+                    <form hx-post="/chat/user" 
+                          hx-target="#resultText" 
+                          hx-swap="beforeend"
+                          hx-on::after-request="this.reset(); htmx.trigger('#ai-response', 'getAIResponse')"
+                          id="chat-form">
+                        <div class="input-wrapper">
+                            <input id="promptInput" 
+                                   type="text" 
+                                   name="message"
+                                   placeholder="Type your message..."
+                                   required>
+                            <div class="button-group">
+                                <button type="submit" 
+                                        class="primary-button">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                </button>
+                                <button id="stopBtn" 
+                                        class="stop-button">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    </svg>
+                                </button>
+                                <button id="clearBtn" 
+                                        class="clear-button">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 6h18"></path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="typing-indicator htmx-indicator">
+                        <span>AI is thinking</span>
+                        <span class="dots">...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="ai-response" 
+         hx-trigger="getAIResponse from:body" 
+         hx-post="/chat/ai"
+         hx-target="#resultText"
+         hx-swap="beforeend"
+         hx-include="[name='message']">
+    </div>
+
+    <script>
+    document.getElementById('chat-form').addEventListener('htmx:afterRequest', function(evt) {
+        if (evt.detail.successful) {
+            this.reset();
+        }
+    });
+    </script>
+</body>
+</html> 

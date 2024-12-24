@@ -53,6 +53,7 @@ class CounslerResult(BaseModel):
 
 
 
+        
 study_plan_agent = Agent(
     "openai:gpt-4o-mini",
     deps_type = StudentDependencies,
@@ -89,6 +90,11 @@ async def search_course_catalog(ctx: RunContext[StudentDependencies], query: str
     retrieved_courses = ctx.deps.rag_retriever.search(query)
     return retrieved_courses
 
+
+
+async def get_result_agent(query: str, deps: StudentDependencies):
+    result = await study_plan_agent.run(query, deps=deps)
+    return result
 
 async def main():
     deps = StudentDependencies(rag_retriever=ColBERTv2Searcher())

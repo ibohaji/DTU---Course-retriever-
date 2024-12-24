@@ -1,0 +1,18 @@
+<div class="input-area">
+    <input id="promptInput" 
+           type="text" 
+           placeholder="Enter prompt..."
+           hx-trigger="keyup[keyCode==13]"
+           hx-post="/generate"
+           hx-target="#resultText"/>
+    <button id="generateBtn" 
+            hx-post="/generate" 
+            hx-target="#resultText">Generate</button>
+    <button id="stopBtn" 
+            hx-trigger="click"
+            hx-post="/stop">Stop</button>
+    <button id="clearBtn" 
+            hx-trigger="click"
+            hx-post="/clear"
+            hx-target="#resultText">Clear Context</button>
+</div> 

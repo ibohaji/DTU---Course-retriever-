@@ -33,7 +33,6 @@ class ColBERTv2Searcher:
 
 
 
-
     def structured_results(self, results: list[dict]) -> list[dict]:
         course_db = CourseDB()
         courses = [] 
@@ -96,6 +95,7 @@ class ColBERTv2Searcher:
                     break
         
         return filtered_results
+
 
 
 if __name__ == "__main__":

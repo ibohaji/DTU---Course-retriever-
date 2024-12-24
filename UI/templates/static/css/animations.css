@@ -1,0 +1,22 @@
+/* Smooth transitions */
+.fade-enter {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Typing indicator animation */
+.typing-indicator .dots {
+    animation: typing 1.4s infinite;
+}
+
+@keyframes typing {
+    0%, 20% { content: '.'; }
+    40%, 60% { content: '..'; }
+    80%, 100% { content: '...'; }
+} 

@@ -1,0 +1,23 @@
+## Chat with DTU's course base 
+
+### Not sure what courses to take for your next semester?
+
+### Chat with the course base to get recommendations.
+
+
+## Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ibohaji/DTU---Course-retriever-.git
+```
+
+
+### 2. Run the server
+from the root directory run: 
+```bash
+python -m infra.app.users.py 
+```
+
+### 3. Chat with the course base
